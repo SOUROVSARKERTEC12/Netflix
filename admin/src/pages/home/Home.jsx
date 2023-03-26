@@ -1,27 +1,29 @@
-import React, {useEffect, useMemo, useState} from 'react';
-import FeaturedInfo from "../../components/featuredInfo/FeaturedInfo";
-import "./home.css"
 import Chart from "../../components/chart/Chart";
-import {userData} from "../../dummyData";
+import FeaturedInfo from "../../components/featuredInfo/FeaturedInfo";
+import "./home.css";
 import WidgetSm from "../../components/widgetSm/WidgetSm";
 import WidgetLg from "../../components/widgetLg/WidgetLg";
+import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 
-function Home() {
-    const MONTHS = useMemo(()=>[
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Agu",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-    ],[]);
+export default function Home() {
+    const MONTHS = useMemo(
+        () => [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Agu",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+        ],
+        []
+    );
 
     const [userStats, setUserStats] = useState([]);
 
@@ -30,13 +32,18 @@ function Home() {
             try {
                 const res = await axios.get("/users/stats", {
                     headers: {
-                        token: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MGNkMTFhZWE0NmYwOWM4MGRhOWFjNCIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY3OTA2Nzg2NywiZXhwIjoxNjc5NDk5ODY3fQ.FDN5mWWUmzBO4PaKERtgfyabCqJxPT9DDhVOZTbBYDw"
+                        token: "Bearer " + JSON.parse(localStorage.getItem("user")).accessToken,
                     },
                 });
-                const statsList = res.data.sort(function (a,b){
+                const statsList = res.data.sort(function (a, b) {
                     return a._id - b._id;
                 });
-                statsList.map(item=> setUserStats(prevState => [...prevState,{name: MONTHS[item._id-1],"New User": item.total}]))
+                statsList.map((item) =>
+                    setUserStats((prev) => [
+                        ...prev,
+                        { name: MONTHS[item._id - 1], "New User": item.total },
+                    ])
+                );
             } catch (err) {
                 console.log(err);
             }
@@ -44,18 +51,14 @@ function Home() {
         getStats();
     }, [MONTHS]);
 
-    console.log(userStats);
-
     return (
         <div className="home">
-            <FeaturedInfo/>
-            <Chart data={userStats} title="User Analytics" grid dataKey="New User"/>
+            <FeaturedInfo />
+            <Chart data={userStats} title="User Analytics" grid dataKey="New User" />
             <div className="homeWidgets">
-                <WidgetSm/>
-                <WidgetLg/>
+                <WidgetSm />
+                <WidgetLg />
             </div>
         </div>
     );
 }
-
-export default Home;
