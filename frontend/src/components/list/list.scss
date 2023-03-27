@@ -1,18 +1,17 @@
-.list{
+.list {
   width: 100%;
   margin-top: 10px;
 
-  .listTitle{
+  .listTitle {
     color: white;
     font-size: 20px;
     font-weight: 500;
-    margin-top: 50px;
+    margin-left: 50px;
   }
 
-  .wrapper{
+  .wrapper {
     position: relative;
-
-    .sliderArrow{
+    .sliderArrow {
       width: 50px;
       height: 100%;
       background-color: rgb(22, 22, 22, 0.5);
@@ -24,20 +23,20 @@
       margin: auto;
       cursor: pointer;
 
-      &.left{
+      &.left {
         left: 0;
       }
 
-      &.right{
+      &.right {
         right: 0;
       }
     }
-    .container{
+    .container {
       margin-left: 50px;
       display: flex;
       margin-top: 10px;
       width: max-content;
-      transform: translateX(0);
+      transform: translateX(0px);
       transition: all 1s ease;
     }
   }
